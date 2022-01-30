@@ -1,7 +1,8 @@
 <%- include("partials/header"); -%>
 
 <h1>
-  <%=title%><a class="delete" onclick=<% onClicked  %> href="/delete"><i class="fa fa-trash"></i></a>
+  <%=title%><a class="buttonChange" href="/post/delete/<%= id %>"><i class="fa fa-trash"></i></a>
+  <!-- <a class="buttonChange" href="/post/update/<%= id %>"><i class="fa fa-pencil"></i></a> -->
 </h1>
 <p><%=content%></p>
 

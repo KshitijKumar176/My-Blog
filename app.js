@@ -5,9 +5,11 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
 const mongoose = require("mongoose");
+const { identity } = require("lodash");
 
 const homeStartingContent = "Welcome to my Blog Website. To write a blog ";
-const aboutContent = "I am Kshitij Kumar, A web developer.";
+const aboutContent =
+  "I am a 3rd year student at GGSIPU, New Delhi. I am currently pursuing B.Tech. in Computer Science with an inclination towards web development.";
 const contactContent = "Email: kshitijkumar176@gmail.com";
 
 const app = express();
@@ -80,30 +82,54 @@ app.get("/posts/:postId", function (req, res) {
   //   }
   // });
 
-  let deleteRecord = false;
-
-  function onClicked() {
-    deleteRecord = true;
-  }
-
   const requestedPostId = req.params.postId;
 
+  // let deleteRecord = false;
+
+  // var onClicked = function () {
+  //   console.log("clicked me");
+  //   deleteRecord = true;
+  // };
   Post.findOne({ _id: requestedPostId }, function (err, post) {
     res.render("post", {
+      id: post._id,
       title: post.title,
       content: post.content,
     });
   });
 
-  deleteRecord && Post.deleteOne({_id: requestedPostId, onClicked: onClicked }, function(err) {
-    res.render("delete");
-  })
+  //   deleteRecord &&
+  //     mongoose
+  //       .model("Post")
+  //       .remove({ _id: requestedPostId }, function (err, response) {
+  //         if (!err) {
+  //           res.redirect("/");
+  //         }
+  //       });
+  //   // Post.deleteOne(
+  //   //   { _id: requestedPostId, onClicked: onClicked },
+  //   //   function (err, response) {
+  //   //     if (err) {
+  //   //       response.render("delete");
+  //   //     } else {
+  //   //       console.log(err);
+  //   //     }
+  //   //   }
+  //   // );
+  //   deleteRecord = false;
 });
 
-// app.get("/delete", function(req,res) {
-//   res.render("delete");
-// });
+app.get("/post/delete/:id", function (req, res) {
+  const postToDeleteId = req.params.id;
 
+  Post.deleteOne({ _id: postToDeleteId }, function (err) {
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("/");
+    }
+  });
+});
 
 app.listen(3000, function () {
   console.log("Server started on port 3000");
